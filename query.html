@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="query.css">
+<script src="jquery-3.0.0.min.js"></script>
+<script src="google-query.js"></script>
+<script type="text/javascript">
+	   var CLIENT_ID = '343259212247-r5em9p3ohvnj068vttc4h30uc7ttvdeq.apps.googleusercontent.com';
+
+   var SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
+
+function checkAuth() {
+        gapi.auth.authorize(
+          {
+            'client_id': CLIENT_ID,
+            'scope': SCOPES.join(' '),
+            'immediate': true
+          }, handleAuthResult);
+      }
+
+/**
+       * Handle response from authorization server.
+       *
+       * @param {Object} authResult Authorization result.
+       */
+      function handleAuthResult(authResult) {
+        var authorizeDiv = document.getElementById('authorize-div');
+        if (authResult && !authResult.error) {
+          // Hide auth UI, then load client library.
+          authorizeDiv.style.display = 'none';
+          loadSheetsApi();
+        } else {
+          // Show auth UI, allowing the user to initiate authorization by
+          // clicking authorize button.
+          authorizeDiv.style.display = 'inline';
+        }
+      }
+
+            /**
+       * Initiate auth flow in response to user clicking authorize button.
+       *
+       * @param {Event} event Button click event.
+       */
+      function handleAuthClick(event) {
+        gapi.auth.authorize(
+          {client_id: CLIENT_ID, scope: SCOPES, immediate: false},
+          handleAuthResult);
+        return false;
+      }
+
+      /**
+       * Load Sheets API client library.
+       */
+      function loadSheetsApi() {
+        var discoveryUrl =
+            'https://sheets.googleapis.com/$discovery/rest?version=v4';
+        gapi.client.load(discoveryUrl).then(listMajors);
+      }
+
+      function listMajors() {
+        gapi.client.sheets.spreadsheets.values.get({
+          spreadsheetId: '1kGv4KThsr_i8vF8yWLwXcUvyL7_aDZRqQEpiHcQbrG8',
+          range: 'A2:C',
+        }).then(function(response) {
+         //console.log(response.result.values);
+          var range = response.result;
+          if (range.values.length > 0) {
+
+            //appendPre('Troubleshoot Sheet:');
+            for (i = 0; i < range.values.length; i++) {
+              var row = range.values[i];
+              // Print columns A and E, which correspond to indices 0 and 4.
+              appendPre(row[0] + ', ' + row[1]);
+              //console.log(row[0]);
+              insertTitle(row[0], row[1]);
+              }
+
+          } else {
+            appendPre('No data found.');
+          }
+        }, function(response) {
+          appendPre('Error: ' + response.result.error.message);
+        });
+      }
+      // @param {string, string} title and message for each message
+      function insertTitle(title, message) {
+        var messageTitle = document.createTextNode(title);
+        var messageBody = document.createTextNode(message);
+        var one = document.getElementById('feed');
+        //var two = one.getElementByTagName('p');
+        
+        var titleDiv = document.createElement('div')
+        titleDiv.setAttribute('id', 'r-title');
+        titleDiv.innerHTML= "Title<p>"+title+"</p>"
+
+        var descriptionDiv = document.createElement('div');
+        descriptionDiv.setAttribute('id', 'r-description');
+        descriptionDiv.innerHTML = "Description<p>"+message+"</p>"
+
+        var responseDiv = document.createElement('div');
+        responseDiv.setAttribute('id', 'r-response');
+                
+        // titleDiv.appendChild(messageTitle);
+        // descriptionDiv.appendChild(messageBody);
+        
+        one.appendChild(titleDiv);
+        one.appendChild(descriptionDiv);
+        one.appendChild(responseDiv);
+      }
+
+      /**
+       * Append a pre element to the body containing the given message
+       * as its text node.
+       *
+       * @param {string} message Text to be placed in pre element.
+       */
+      function appendPre(message) {
+        var pre = document.getElementById('output');
+        var textContent = document.createTextNode(message + '\n');
+        pre.appendChild(textContent);
+      }
+</script>
+<script src="https://apis.google.com/js/client.js?onload=checkAuth"></script>
+
+</head>
+<body>
+<div class='b-box'>
+  <input id='new-one' type="text" placeholder="The title of your problem...">
+  <input id='new-two' type="text" placeholder="Describe your problem with us...">
+  <div class='button' id='button1' style="display: none">
+    <p class='p-textColor'> post </p>
+  </div>
+  <div class="button" id='button2' style="display: none">
+    <p class='p-textColor'> delete </p>
+  </div>
+</div>
+<div id='feed'>
+	<!-- <div id="r-title"> Title
+		<p></p>
+	</div>
+	<div id="r-description"> Description
+		<p class="pee"></p>
+	</div>
+	<div id="r-response">
+		<p></p>
+	</div> -->
+</div>
+
+    <div id="authorize-div" style="display: none">
+      <span>Authorize access to Google Sheets API</span>
+      <!--Button for the user to click to initiate auth sequence -->
+      <button id="authorize-button" onclick="handleAuthClick(event)">
+        Authorize
+      </button>
+    </div>
+    <pre id="output" style="display: none"></pre>
+
+</body>
+</html>
