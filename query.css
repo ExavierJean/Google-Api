@@ -132,7 +132,7 @@ p {
   width: 550px;
   margin-top: -250px;
   margin-left: -275px;
-  padding: 20px;
+  padding: 25px;
 }
 
 #feed {
@@ -146,7 +146,7 @@ p {
   width: 550px;
   margin-top: -250px;
   margin-left: -275px;
-  padding: 20px;
+  padding: 25px;
   overflow-y: scroll;
 }
 
@@ -171,44 +171,52 @@ p {
 #r-title p {
 	color: white;
 	font-size: 25px;
-    height: 25px;
-    width: 250px;
-    margin: 5px 0px 0px 5px;
+  height: 25px;
+  width: 250px;
+  margin: 5px 0px 0px 5px;
 }
 
 #r-description {
 	color: grey;
-    margin: 20px 0px 0px 0px;
-    width: 350px;
-    float: left;
-    clear: left;
+  margin: 20px 0px 0px 0px;
+  width: 350px;
+  float: left;
+  clear: left;
 }
 
 #r-description p {
 	color: white;
-	height: 90px;
-    width: 350px;
-    overflow-y: scroll;
-    margin: 5px 0px 0px 5px;
-    font-size: 20px;
+	height: 100px;
+  width: 350px;
+  overflow-y: scroll;
+  margin: 5px 0px 0px 5px;
+  font-size: 20px;
 }
 
 #r-description p::-webkit-scrollbar {
-   	-webkit-appearance: none;
-    width: 10px;
+ 	-webkit-appearance: none;
+  width: 10px;
 }
 
 #r-description p::-webkit-scrollbar-thumb {
 	border-radius: 4px;
-    background-color: rgba(60,60,60,1);
+  background-color: rgba(60,60,60,1);
 }
 
-#r-response{
+#r-response {
+  float: right;
+  color: white;
+  width: 100px;
+  text-align: center;
+}
+
+#r-response p {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: red;
-  float: right;
+  background: grey;
+  color: transparent;
+  margin: auto;
 }
 
 #button1 {

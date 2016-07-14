@@ -70,9 +70,9 @@ function checkAuth() {
             for (i = 0; i < range.values.length; i++) {
               var row = range.values[i];
               // Print columns A and E, which correspond to indices 0 and 4.
-              appendPre(row[0] + ', ' + row[1]);
+              appendPre(row[0] + ', ' + row[1] + ', ' + row[2]);
               //console.log(row[0]);
-              insertTitle(row[0], row[1]);
+              insertTitle(row[0], row[1], row[2]);
               }
 
           } else {
@@ -83,15 +83,16 @@ function checkAuth() {
         });
       }
       // @param {string, string} title and message for each message
-      function insertTitle(title, message) {
+      function insertTitle(title, message, response) {
         var messageTitle = document.createTextNode(title);
         var messageBody = document.createTextNode(message);
+        var messageResponse = document.createTextNode(response);
         var one = document.getElementById('feed');
         //var two = one.getElementByTagName('p');
         
         var titleDiv = document.createElement('div')
         titleDiv.setAttribute('id', 'r-title');
-        titleDiv.innerHTML= "Title<p>"+title+"</p>"
+        titleDiv.innerHTML = "Title<p>"+title+"</p>"
 
         var descriptionDiv = document.createElement('div');
         descriptionDiv.setAttribute('id', 'r-description');
@@ -99,6 +100,7 @@ function checkAuth() {
 
         var responseDiv = document.createElement('div');
         responseDiv.setAttribute('id', 'r-response');
+        responseDiv.innerHTML = "Status<p>"+response+"</p>"
                 
         // titleDiv.appendChild(messageTitle);
         // descriptionDiv.appendChild(messageBody);
@@ -127,6 +129,7 @@ function checkAuth() {
 <div class='b-box'>
   <input id='new-one' type="text" placeholder="The title of your problem...">
   <input id='new-two' type="text" placeholder="Describe your problem with us...">
+  <input id='new-three' type="text" value="X" style='display: none;'>
   <div class='button' id='button1' style="display: none">
     <p class='p-textColor'> post </p>
   </div>
